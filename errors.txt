@@ -1,0 +1,18 @@
+﻿I'm sorry, but errors were detected in your script. Please correct the
+errors listed below, and try again.
+
+
+File "game/script.rpy", line 32: Line is followed by a block, despite not being a menu choice. Did you forget a colon at the end of the line?
+    "Goto the green room"
+                         ^
+
+File "game/script.rpy", line 38: expected ':' not found.
+    label green_room
+                    ^
+
+File "game/script.rpy", line 41: expected ':' not found.
+    label red_room
+                  ^
+
+Ren'Py Version: Ren'Py 8.0.3.22090809
+Wed May 10 14:56:59 2023
