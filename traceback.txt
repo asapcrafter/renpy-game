@@ -1,22 +1,22 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
 While running game code:
-  File "game/script.rpy", line 50, in script
-    alex "Nice to meet you too! Alright, so your main job here will be taking orders from customers. Just take their order, pass it onto the barista, and keep things moving."
-Exception: Sayer 'alex' is not defined.
+  File "game/script.rpy", line 161, in script
+    "Nice! Looks like you got an extra $%(tip)"
+ValueError: incomplete format
 
 -- Full Traceback ------------------------------------------------------------
 
 Full traceback:
-  File "game/script.rpy", line 50, in script
-    alex "Nice to meet you too! Alright, so your main job here will be taking orders from customers. Just take their order, pass it onto the barista, and keep things moving."
-  File "C:\Users\Stephen T\Downloads\renpy-8.0.3-sdk\renpy\ast.py", line 881, in execute
-    who = eval_who(self.who, self.who_fast)
-  File "C:\Users\Stephen T\Downloads\renpy-8.0.3-sdk\renpy\ast.py", line 774, in eval_who
-    raise Exception("Sayer '%s' is not defined." % who)
-Exception: Sayer 'alex' is not defined.
+  File "game/script.rpy", line 161, in script
+    "Nice! Looks like you got an extra $%(tip)"
+  File "C:\Users\Stephen T\Downloads\renpy-8.0.3-sdk\renpy\ast.py", line 921, in execute
+    renpy.exports.say(who, what, *args, **kwargs)
+  File "C:\Users\Stephen T\Downloads\renpy-8.0.3-sdk\renpy\exports.py", line 1362, in say
+    what = what % tag_quoting_dict
+ValueError: incomplete format
 
 Windows-10-10.0.19045 AMD64
 Ren'Py 8.0.3.22090809
-WRIT105CD 1.0
-Fri May 12 19:02:27 2023
+The Arbor Cafe Game Alpha
+Fri May 12 23:22:41 2023

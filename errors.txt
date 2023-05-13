@@ -2,9 +2,15 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 58: Line is indented, but the preceding say statement statement does not expect a block. Please check this line's indentation.
-    jump professor_one
-    ^
+File "game/script.rpy", line 12: invalid syntax
+    global tip = 0
+                ^
+    
+
+File "game/script.rpy", line 13: invalid syntax
+    global balance = 0
+                    ^
+    
 
 Ren'Py Version: Ren'Py 8.0.3.22090809
-Fri May 12 19:07:36 2023
+Fri May 12 23:19:17 2023

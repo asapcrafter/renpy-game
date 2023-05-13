@@ -3,11 +3,17 @@
 # Declare characters used by this game. The color argument colorizes the
 # name of the character.
 
-define e = Character("Eileen")
+
+
 
 # The game starts here.
 
 label start:
+    $ global tip
+    $ global balance
+    $ tip = 0
+    $ balance = 0
+
     init:
         image you = "stick.png" 
         image campus = "rsz_ucsb2.jpg"
@@ -60,9 +66,20 @@ label start:
         jump professor_one
 
         label professor_one:
+            
             define t = Character("Professor", who_color="#c8ffc8")
+
+            "The door chime rings again, pulling you from your thoughts. As you look up, your eyes widen in surprise."
+
+            "{i}With a stack of ungraded papers under one arm and a weary smile on his face, it's Professor Lewis - the one who teaches your challenging, yet fascinating, Philosophy class.{/i}"
+
+            "Professor Lewis" "Ah, what a pleasant surprise! It's nice to see one of my students outside of the classroom."
+
+            "{i}You greet him with a smile, feeling a mix of surprise and a slight nervousness.{/i}"
+
+            player "Hello, Professor Johnson. It's nice to see you too. What can I get you today?"
+
             label Professor_D1:
-                player "Hello, what can I get for you?"
                 t "Americano. Splash of oat milk."
                 menu:
                     t "Americano. Splash of oat milk."
@@ -131,11 +148,13 @@ label start:
 
             label Professor_D1R30:
                 "Your professor takes his Americano from you and leaves the coffee shop."
+                $ tip += 2
                 jump end
             
             label Professor_D1R31:
                 p "Thanks."
                 "Your professor thanks you for his coffee and leaves the coffee shop."
+                $ tip += 4
                 jump end
 
             label Professor_D1R32:
@@ -143,11 +162,119 @@ label start:
                 jump end
 
             label end:
-                return
+                "You check if the professor left anything extra"
+                if tip == 0: 
+                    "Looks like you didn't get anything."
+                else:
+                    $ tip
+                    "Nice! Looks like you got an extra $%(tip)d"
 
-            return
+        jump karen_one
 
+        label karen_one:
+            define k = Character("Karen", who_color="#c8ffc8")
 
+            "As you stand behind the counter, the door chime rings, announcing the arrival of a new customer."
+
+            "{i}Tightly curled hair, oversized sunglasses perched on her head, and an aura of entitlement - there's no mistaking it. This is a 'Karen'.{/i}"
+
+            k "I'd like to place an order, but make sure it's exactly how I want it."
+
+            "{i}You plaster on your best customer service smile, ready for the challenge.{/i}"
+
+            player "Of course, ma'am. We aim to provide the best service. What can I get you today?"
+
+            label Karen_D1:
+                k "I'll have a venti Strawberry Frappuccino"
+                menu:
+                    "We actually don't serve Frappuccinos, but there is a Starbucks down the street that does.":
+                        jump Karen_D1R1
+                    "We actually don't serve Frappuccinos, and we've run out of Strawberry syrup. Is there anything else I can make you?":
+                        jump Karen_D1R4
+            
+            label Karen_D1R1:
+                k "That's not true! My friend told me that you served Frappuccinos here."
+                menu:
+                    "We do not. Your friend was wrong.":
+                        jump Karen_D1R5
+                    "I'm sorry, we do not serve Frappuccinos.":
+                        jump Karen_D1R7
+
+            label Karen_D1R4:
+                k "Well, just make me a Frappuccino with blueberry syrup instead."
+                menu:
+                    "I've already told you we don't make Frappuccinos. We cannot serve you a bluberry Frappuccino.":
+                        jump Karen_D1R10
+                    "We can't make a Frappuccino, but we can make you a blueberry smoothie instead, with real blueberries.":
+                        jump Karen_D1R9
+            
+            label Karen_D1R10:
+                k "This is ridiculous. I'd like to speak to your manager."
+                menu:
+                    "I am the manager of this coffee shop.":
+                        jump Karen_D1R11
+                    "Ok. Let me go grab her for you.":
+                        jump Karen_D1R17
+
+            label Karen_D1R11:
+                k "Stop lying to me and go get your manager."
+                menu:
+                    "I'm not lying. I am the manager and I'm telling you we can't serve your order.":
+                        jump Karen_D1R16
+                    "You're right, I'm sorry. Let me go grab her for you.":
+                        jump Karen_D1R17
+
+            label Karen_D1R5:
+                k "You've never met my friend. You don't even know that."
+                menu:
+                    "Yes, I do. I work here and I know what we offer.":
+                        jump Karen_D1R29
+                    "I'm sorry, you're right. I've never met your friend. I don't know for sure if we serve Frappuccinos.":
+                        jump Karen_D1R27
+            
+            label Karen_D1R27:
+                k "I'm in a hurry. Just make me a latte now."
+                menu:
+                    "One latte coming up! Sorry for the delay.":
+                        jump Karen_D1R28
+
+            label Karen_D1R29:
+                k "You're being very disrespectful. Let me speak to your manager."
+                menu:
+                    "No, I'm not. My manager is not available right now.":
+                        jump Karen_D1R16
+                    "You're right, I'm sorry. Let me speak to my manager.":
+                        jump Karen_D1R17
+
+            label Karen_D1R17:
+                k "Thank you. I will be waiting."
+                menu:
+                    "I've just spoken to my manager, and it seems we can make you a Frappuccino. Sorry for the delay.":
+                        jump Karen_D1R20
+
+            label Karen_D1R9:
+                k "Ok, that's good. Thank you"
+                "You hand her the blueberry Frappuccino. She smiles, takes the drink from you, and leaves the coffee shop."
+                jump end_karen
+            
+            label Karen_D1R16:
+                k "This is the worst coffee shop I've ever been to. I'm leaving."
+                "She storms out of the coffee shop angrily."
+                jump end_karen
+
+            label Karen_D1R28:
+                "You hand her the latte. She gives you a disgruntled look, takes the drink from you, and leaves the coffee shop."
+                jump end_karen
+
+            label Karen_D1R20:
+                k "Ok, that's wonderful."
+                "You hand her the Frappuccino. She smiles, takes the drink from you, and leaves the coffee shop."
+                jump end_karen
+
+            label Karen_D1R7:
+                "She gives you a disgruntled look and leaves the coffee shop."
+                jump end_karen
+            
     return
 
 
