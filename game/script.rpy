@@ -65,6 +65,7 @@ label start:
 
         jump professor_one
 
+        # The first customer of the day
         label professor_one:
             
             define t = Character("Professor", who_color="#c8ffc8")
@@ -80,13 +81,12 @@ label start:
             player "Hello, Professor Johnson. It's nice to see you too. What can I get you today?"
 
             label Professor_D1:
-                t "Americano. Splash of oat milk."
                 menu:
                     t "Americano. Splash of oat milk."
                     "How's your day been? I took your midterm earlier and it was pretty hard.":
                         jump Professor_D1R4
                     "Coming right up. Should be about 5 minutes.":
-                        jump Professor_D1R30
+                        jump Professor_D1R33
             
             label Professor_D1R4:
                 menu:
@@ -97,36 +97,36 @@ label start:
                         jump Professor_D1R7
             
             label Professor_D1R7:
-                t "Yeah. I'll give them back tomorrow. How much longer for the coffee?"
                 menu:
+                    t "Yeah. I'll give them back tomorrow. How much longer for the coffee?"
                     "Coming up right now.":
                         jump Professor_D1R30
             
             label Professor_D1R9:
-                t "You did alright. I'm not going to curve it, and it seemed like you grasped the material sufficiently."
                 menu:
+                    t "You did alright. I'm not going to curve it, and it seemed like you grasped the material sufficiently."
                     "Could you tell me what letter grade I got?":
                         jump Professor_D1R12
                     "Oh, okay. Were the rest of the tests generally ok?":
                         jump Professor_D1R11
 
             label Professor_D1R11:
-                t "I pride myself on having a difficult class, where only the best get an A."
                 menu:
+                    t "I pride myself on having a difficult class, where only the best get an A."
                     "I look forward to seeing if I'm one of the best.":
                         jump Professor_D1R15
                     "That seems a little harsh and unfair.":
                         jump Professor_D1R19
             
             label Professor_D1R15:
-                t "That's a good attitude to have."
                 menu:
+                    t "That's a good attitude to have."
                     "Here's your coffee.":
                         jump Professor_D1R31
             
             label Professor_D1R19:
-                t "You are the embodiment of the classic entitled student. Always asking for an A and not working for it."
                 menu:
+                    t "You are the embodiment of the classic entitled student. Always asking for an A and not working for it."
                     "I'm willing to work for it. I'd just like to know about the grading distributions beforehand.":
                         jump Professor_D1R24
                     "I'm not unmotivated. This is just an irrational system on which to grade your class.":
@@ -141,8 +141,8 @@ label start:
                 jump Professor_D1R32
 
             label Professor_D1R12:
-                t "You're not allowed to ask me for your grade before I hand the tests back to everyone. How much longer on the coffee?"
                 menu:
+                    t "You're not allowed to ask me for your grade before I hand the tests back to everyone. How much longer on the coffee?"
                     "Coming up right now. Here you go.":
                         jump Professor_D1R30
 
@@ -161,6 +161,11 @@ label start:
                 "Your professor angrily takes his Americano from you and storms out of the coffee shop."
                 jump end
 
+            label Professor_D1R33:
+                "Your professor takes his Americano from you and leaves the coffee shop."
+                "{i}He looked unamused. Perhap you should have tried starting a conversation with him.{/i}"
+                jump end
+
             label end:
                 "You check if the professor left anything extra"
                 if tip == 0: 
@@ -168,6 +173,9 @@ label start:
                 else:
                     $ tip
                     "Nice! Looks like you got an extra $%(tip)d"
+                    "You now have a balance of $%(balance)d" 
+                $ balance += tip
+                $ tip = 0
 
         jump karen_one
 
@@ -185,76 +193,77 @@ label start:
             player "Of course, ma'am. We aim to provide the best service. What can I get you today?"
 
             label Karen_D1:
-                k "I'll have a venti Strawberry Frappuccino"
                 menu:
+                    k "I'll have a venti Strawberry Frappuccino"
                     "We actually don't serve Frappuccinos, but there is a Starbucks down the street that does.":
                         jump Karen_D1R1
                     "We actually don't serve Frappuccinos, and we've run out of Strawberry syrup. Is there anything else I can make you?":
                         jump Karen_D1R4
             
             label Karen_D1R1:
-                k "That's not true! My friend told me that you served Frappuccinos here."
                 menu:
+                    k "That's not true! My friend told me that you served Frappuccinos here."
                     "We do not. Your friend was wrong.":
                         jump Karen_D1R5
                     "I'm sorry, we do not serve Frappuccinos.":
                         jump Karen_D1R7
 
             label Karen_D1R4:
-                k "Well, just make me a Frappuccino with blueberry syrup instead."
                 menu:
+                    k "Well, just make me a Frappuccino with blueberry syrup instead."
                     "I've already told you we don't make Frappuccinos. We cannot serve you a bluberry Frappuccino.":
                         jump Karen_D1R10
                     "We can't make a Frappuccino, but we can make you a blueberry smoothie instead, with real blueberries.":
                         jump Karen_D1R9
             
             label Karen_D1R10:
-                k "This is ridiculous. I'd like to speak to your manager."
                 menu:
+                    k "This is ridiculous. I'd like to speak to your manager."
                     "I am the manager of this coffee shop.":
                         jump Karen_D1R11
                     "Ok. Let me go grab her for you.":
                         jump Karen_D1R17
 
             label Karen_D1R11:
-                k "Stop lying to me and go get your manager."
                 menu:
+                    k "Stop lying to me and go get your manager."
                     "I'm not lying. I am the manager and I'm telling you we can't serve your order.":
                         jump Karen_D1R16
                     "You're right, I'm sorry. Let me go grab her for you.":
                         jump Karen_D1R17
 
             label Karen_D1R5:
-                k "You've never met my friend. You don't even know that."
                 menu:
+                    k "You've never met my friend. You don't even know that."
                     "Yes, I do. I work here and I know what we offer.":
                         jump Karen_D1R29
                     "I'm sorry, you're right. I've never met your friend. I don't know for sure if we serve Frappuccinos.":
                         jump Karen_D1R27
             
             label Karen_D1R27:
-                k "I'm in a hurry. Just make me a latte now."
                 menu:
+                    k "I'm in a hurry. Just make me a latte now."
                     "One latte coming up! Sorry for the delay.":
                         jump Karen_D1R28
 
             label Karen_D1R29:
-                k "You're being very disrespectful. Let me speak to your manager."
                 menu:
+                    k "You're being very disrespectful. Let me speak to your manager."
                     "No, I'm not. My manager is not available right now.":
                         jump Karen_D1R16
                     "You're right, I'm sorry. Let me speak to my manager.":
                         jump Karen_D1R17
 
             label Karen_D1R17:
-                k "Thank you. I will be waiting."
                 menu:
+                    k "Thank you. I will be waiting."
                     "I've just spoken to my manager, and it seems we can make you a Frappuccino. Sorry for the delay.":
                         jump Karen_D1R20
 
             label Karen_D1R9:
                 k "Ok, that's good. Thank you"
                 "You hand her the blueberry Frappuccino. She smiles, takes the drink from you, and leaves the coffee shop."
+                $ tip += 2
                 jump end_karen
             
             label Karen_D1R16:
@@ -269,12 +278,148 @@ label start:
             label Karen_D1R20:
                 k "Ok, that's wonderful."
                 "You hand her the Frappuccino. She smiles, takes the drink from you, and leaves the coffee shop."
+                $ tip += 3.50
                 jump end_karen
 
             label Karen_D1R7:
                 "She gives you a disgruntled look and leaves the coffee shop."
                 jump end_karen
+
+            label end_karen:
+                "You feel relieved now that she's gone."
+                "You check if the lady left anything extra"
+                if tip == 0: 
+                    "Looks like you didn't get anything."
+                else:
+                    $ tip
+                    "Nice! Looks like you got an extra $%(tip)d. Perhaps she's not as bad as you thought."
+                    "You now have a balance of $%(balance)d" 
+                $ balance += tip
+                $ tip = 0
+
+
+        jump parent
+        
+        label parent:
+            define p = Character("Parent", who_color="#c8ffc8")
+
+            label Parent_D1:
+                menu:
+                    p "Hi, can I get a small black coffee? How are you?"
+                    "I'm good, how are you?":
+                        jump Parent_D1R4
+                    "Of course. I'm alright, thanks for asking.":
+                        jump Parent_D1R5
             
+            label Parent_D1R4:
+                p "Good, thanks."
+                menu:
+                    "Here's your black coffee. Thanks for stopping by.":
+                        jump Parent_D1R40
+            
+            label Parent_D1R5:
+                menu:
+                    p "Yeah, I'm glad that you're pulling through. My son hasn't been too happy here. He's a Freshman."
+                    "Oh, I'm sorry to hear that.":
+                        jump Parent_D1R7
+                    "Oh, that sucks. I'm surprised he feels that way.":
+                        jump Parent_D1R9
+
+            label Parent_D1R7:
+                menu:
+                    p "It's alright, it's just tough to see him be so upset."
+                    "Yeah, I know the feeling. College can be difficult. There are some resources at the school if he every needs any help.":
+                        jump Parent_D1R13
+                    "He should just cheer up. UCSB is a beautiful place to be at.":
+                        jump Parent_D1R11
+
+            label Parent_D1R9:
+                p "Why is that?"
+                menu:
+                    "UCSB is like the most pleasant place in the world. It would be hard to feel depressed here.":
+                        jump Parent_D1R11
+                    "There are a lot of resources for him that UCSB provides, that's all.":
+                        jump Parent_D1R13
+            
+            label Parent_D1R11:
+                p "That's a really ignorant way of thinking about mental health."
+                menu:
+                    "Nah, I know about mental health. I've dealt with my own anxiety issues.":
+                        jump Parent_D1R15
+                    "Yeah, you're right. I'm sorry. I hope your son feels better soon.":
+                        jump Parent_D1R21
+            
+            label Parent_D1R13:
+                p "That's good to hear. Can you point me to some of those resources?"
+                menu:
+                    "Yes, I'd love to. Let me write down the UCSB conseling services number. Hopefully this can help your son.":
+                        jump Parent_D1R23
+                    "Uh, sure, but they kinda suck.":
+                        jump Parent_D1R25
+
+            label Parent_D1R23:
+                p "Thanks for all your help. This was a wonderful service."
+                jump Parent_D1R42
+            
+            label Parent_D1R25:
+                p "What do you mean?"
+                menu:
+                    "Nothing. Regardless, I can give you their contact anyways to see if your son finds them more useful than I did.":
+                        jump Parent_D1R28
+                    "They tend to ignore the students' mental health needs.":
+                        jump Parent_D1R29
+                
+            label Parent_D1R28:
+                p "Thank you."
+                jump Parent_D1R40
+
+            label Parent_D1R29:
+                p "Well, if the mental health support system is that terrible, I might as well pull my son from UCSB. Thanks for the coffee."
+                jump Parent_D1R41
+
+            label Parent_D1R15:
+                p "Well, I'm sorry to hear that, but you don't know more about my son's mental issues than I do."
+                menu:
+                    "Uh, ok. Here's your coffee. I'm sure your son is doing fine.":
+                        jump Parent_D1R20
+                    "You're right. I'm sorry about your son. I hope he can feel better soon.":
+                        jump Parent_D1R21
+
+            label Parent_D1R20:
+                p "You are really inconsiderate. I have no idea how you got accepted here."
+                "The parent quickly pays and doesn't leave anything extra"
+                jump Parent_D1R41
+
+            label Parent_D1R21:
+                p "It's ok. Thanks for the coffee. It was nice to at least talk to someone, even though it seems you can be a little inconsiderate at times."
+                tip += 1
+                jump Parent_D1R40
+
+            label Parent_D1R41:
+                "The parent quickly pays and doesn't leave anything extra"
+                "She angrily takes the coffee from you and leaves the coffee shop in a hurry."
+                jump end_parent
+
+            label Parent_D1R40:
+                "She takes the coffee from you and exits the coffee shop."
+                tip += 2
+                jump end_parent
+            
+            label Parent_D1R42:
+                "She takes the coffee from you while giving you a smile and leaves the coffee shop feeling a little better than before."
+                tip += 5
+                jump end_parent
+
+            label end_parent:
+                if tip == 0: 
+                    "It would have been nice if you received something extra"
+                else:
+                    $ tip
+                    "Nice! Looks like you got an extra $%(tip)d."
+                    "You now have a balance of $%(balance)d" 
+                $ balance += tip
+                $ tip = 0
+
     return
 
 

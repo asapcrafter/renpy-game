@@ -1,22 +1,22 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
 While running game code:
-  File "game/script.rpy", line 161, in script
-    "Nice! Looks like you got an extra $%(tip)"
-ValueError: incomplete format
+  File "game/script.rpy", line 271, in script
+    "You hand her the Frappuccino. She smiles, takes the drink from you, and leaves the coffee shop."
+ScriptError: could not find label 'end_karen'.
 
 -- Full Traceback ------------------------------------------------------------
 
 Full traceback:
-  File "game/script.rpy", line 161, in script
-    "Nice! Looks like you got an extra $%(tip)"
-  File "C:\Users\Stephen T\Downloads\renpy-8.0.3-sdk\renpy\ast.py", line 921, in execute
-    renpy.exports.say(who, what, *args, **kwargs)
-  File "C:\Users\Stephen T\Downloads\renpy-8.0.3-sdk\renpy\exports.py", line 1362, in say
-    what = what % tag_quoting_dict
-ValueError: incomplete format
+  File "game/script.rpy", line 271, in script
+    "You hand her the Frappuccino. She smiles, takes the drink from you, and leaves the coffee shop."
+  File "C:\Users\Stephen T\Downloads\renpy-8.0.3-sdk\renpy\ast.py", line 1974, in execute
+    rv = renpy.game.script.lookup(target)
+  File "C:\Users\Stephen T\Downloads\renpy-8.0.3-sdk\renpy\script.py", line 927, in lookup
+    raise ScriptError("could not find label '%s'." % str(original))
+ScriptError: could not find label 'end_karen'.
 
 Windows-10-10.0.19045 AMD64
 Ren'Py 8.0.3.22090809
 The Arbor Cafe Game Alpha
-Fri May 12 23:22:41 2023
+Fri May 12 23:41:31 2023

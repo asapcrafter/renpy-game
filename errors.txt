@@ -2,15 +2,11 @@
 errors listed below, and try again.
 
 
-File "game/script.rpy", line 12: invalid syntax
-    global tip = 0
-                ^
-    
+The label end is defined twice, at File "game/script.rpy", line 169:
+            label end:
+and File "game/script.rpy", line 405:
+            label end:
 
-File "game/script.rpy", line 13: invalid syntax
-    global balance = 0
-                    ^
-    
 
 Ren'Py Version: Ren'Py 8.0.3.22090809
-Fri May 12 23:19:17 2023
+Fri May 12 23:55:09 2023
