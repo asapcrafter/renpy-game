@@ -392,7 +392,7 @@ label start:
 
             label Parent_D1R21:
                 p "It's ok. Thanks for the coffee. It was nice to at least talk to someone, even though it seems you can be a little inconsiderate at times."
-                tip += 1
+                $ tip += 1
                 jump Parent_D1R40
 
             label Parent_D1R41:
@@ -402,12 +402,12 @@ label start:
 
             label Parent_D1R40:
                 "She takes the coffee from you and exits the coffee shop."
-                tip += 2
+                $ tip += 2
                 jump end_parent
             
             label Parent_D1R42:
                 "She takes the coffee from you while giving you a smile and leaves the coffee shop feeling a little better than before."
-                tip += 5
+                $ tip += 5
                 jump end_parent
 
             label end_parent:
