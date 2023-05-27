@@ -78,7 +78,7 @@ label start:
 
             "{i}You greet him with a smile, feeling a mix of surprise and a slight nervousness.{/i}"
 
-            player "Hello, Professor Johnson. It's nice to see you too. What can I get you today?"
+            player "Hello, Professor Lewis. It's nice to see you too. What can I get you today?"
 
             label Professor_D1:
                 menu:
@@ -87,7 +87,7 @@ label start:
                         jump Professor_D1R4
                     "Coming right up. Should be about 5 minutes.":
                         jump Professor_D1R33
-            
+
             label Professor_D1R4:
                 menu:
                     t "Oh yeah, I remember just grading yours before coming here."
@@ -152,7 +152,7 @@ label start:
                 jump end
             
             label Professor_D1R31:
-                p "Thanks."
+                t "Thanks."
                 "Your professor thanks you for his coffee and leaves the coffee shop."
                 $ tip += 4
                 jump end
@@ -173,8 +173,8 @@ label start:
                 else:
                     $ tip
                     "Nice! Looks like you got an extra $%(tip)d"
+                    $ balance += tip
                     "You now have a balance of $%(balance)d" 
-                $ balance += tip
                 $ tip = 0
 
         jump karen_one
@@ -293,8 +293,8 @@ label start:
                 else:
                     $ tip
                     "Nice! Looks like you got an extra $%(tip)d. Perhaps she's not as bad as you thought."
+                    $ balance += tip
                     "You now have a balance of $%(balance)d" 
-                $ balance += tip
                 $ tip = 0
 
 
@@ -416,8 +416,8 @@ label start:
                 else:
                     $ tip
                     "Nice! Looks like you got an extra $%(tip)d."
+                    $ balance += tip
                     "You now have a balance of $%(balance)d" 
-                $ balance += tip
                 $ tip = 0
 
     return
