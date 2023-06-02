@@ -107,7 +107,7 @@ label start:
 
             "{i}You greet him with a smile, feeling a mix of surprise and a slight nervousness.{/i}"
 
-            player "Hello, Professor Johnson. It's nice to see you too. What can I get you today?"
+            player "Hello, Professor Lewis. It's nice to see you too. What can I get you today?"
 
             label Professor_D1:
                 menu:
