@@ -11,8 +11,36 @@
 label start:
     $ global tip
     $ global balance
+    $ global professor_rate
+    $ global karen_rate
+    $ global love_rate
+    $ global parent_rate
+    $ global nerd_rate
+    $ global athlete_rate
+    $ global day
+    $ global total_tip
+    $ global rent_paid
+    $ global food_paid
+    $ global electric_paid
     $ tip = 0
     $ balance = 0
+    $ professor_rate = 0
+    $ karen_rate = 0
+    $ love_rate = 0
+    $ parent_rate = 0
+    $ nerd_rate = 0
+    $ athlete_rate = 0
+    $ day = 1
+    $ total_tip = 0
+    $ rent_paid = 0
+    $ food_paid = 0
+    $ electric_paid = 0
+
+    screen Day:
+        text "{color=#ffffff}Day: [day]{/color}" xpos 0.1 ypos 0.1
+
+    screen Savings:
+        text "{color=#ffffff}Savings: $[balance]{/color}" xpos 0.1 ypos 0.2
 
     init:
         image you = "stick.png" 
@@ -39,9 +67,10 @@ label start:
             image arbor_outside = "arbor.jpg"
         define alex = Character("Alex", who_color="#c8ffc8")
         define player = Character("Player", who_color="#3340fd")
-
-
+        
         scene arbor_outside with fade:
+
+        "Day 1"
         
         "The Arbor cafe is located in the middle of the campus. It's a small, but it gets busy during the day."
         "You arrive at the campus coffee shop, the aroma of fresh coffee beans filling the air."
@@ -78,7 +107,7 @@ label start:
 
             "{i}You greet him with a smile, feeling a mix of surprise and a slight nervousness.{/i}"
 
-            player "Hello, Professor Lewis. It's nice to see you too. What can I get you today?"
+            player "Hello, Professor Johnson. It's nice to see you too. What can I get you today?"
 
             label Professor_D1:
                 menu:
@@ -87,7 +116,7 @@ label start:
                         jump Professor_D1R4
                     "Coming right up. Should be about 5 minutes.":
                         jump Professor_D1R33
-
+            
             label Professor_D1R4:
                 menu:
                     t "Oh yeah, I remember just grading yours before coming here."
@@ -144,21 +173,22 @@ label start:
                 menu:
                     t "You're not allowed to ask me for your grade before I hand the tests back to everyone. How much longer on the coffee?"
                     "Coming up right now. Here you go.":
-                        jump Professor_D1R30
+                        jump Professor_D1R33
 
             label Professor_D1R30:
                 "Your professor takes his Americano from you and leaves the coffee shop."
-                $ tip += 2
+                $ professor_rate += 1
                 jump end
             
             label Professor_D1R31:
-                t "Thanks."
+                p "Thanks."
                 "Your professor thanks you for his coffee and leaves the coffee shop."
-                $ tip += 4
+                $ professor_rate += 2
                 jump end
 
             label Professor_D1R32:
                 "Your professor angrily takes his Americano from you and storms out of the coffee shop."
+                $ professor_rate -= 1
                 jump end
 
             label Professor_D1R33:
@@ -168,13 +198,15 @@ label start:
 
             label end:
                 "You check if the professor left anything extra"
+                if (professor_rate > 0):
+                    $ tip = professor_rate * 5
                 if tip == 0: 
                     "Looks like you didn't get anything."
                 else:
                     $ tip
                     "Nice! Looks like you got an extra $%(tip)d"
-                    $ balance += tip
-                    "You now have a balance of $%(balance)d" 
+                $ balance += tip
+                $ total_tip += tip
                 $ tip = 0
 
         jump karen_one
@@ -263,12 +295,13 @@ label start:
             label Karen_D1R9:
                 k "Ok, that's good. Thank you"
                 "You hand her the blueberry Frappuccino. She smiles, takes the drink from you, and leaves the coffee shop."
-                $ tip += 2
+                $ karen_rate += 1
                 jump end_karen
             
             label Karen_D1R16:
                 k "This is the worst coffee shop I've ever been to. I'm leaving."
                 "She storms out of the coffee shop angrily."
+                $ karen_rate -= 2
                 jump end_karen
 
             label Karen_D1R28:
@@ -278,30 +311,205 @@ label start:
             label Karen_D1R20:
                 k "Ok, that's wonderful."
                 "You hand her the Frappuccino. She smiles, takes the drink from you, and leaves the coffee shop."
-                $ tip += 3.50
+                $ karen_rate += 2
                 jump end_karen
 
             label Karen_D1R7:
                 "She gives you a disgruntled look and leaves the coffee shop."
+                $ karen_rate -= 1
                 jump end_karen
 
             label end_karen:
                 "You feel relieved now that she's gone."
                 "You check if the lady left anything extra"
+                if (karen_rate > 0):
+                    $ tip = karen_rate * 5
                 if tip == 0: 
                     "Looks like you didn't get anything."
                 else:
                     $ tip
                     "Nice! Looks like you got an extra $%(tip)d. Perhaps she's not as bad as you thought."
-                    $ balance += tip
-                    "You now have a balance of $%(balance)d" 
+                $ balance += tip
+                $ total_tip += tip
                 $ tip = 0
 
+    label night_one:
+        scene black
 
-        jump parent
+        $ balance += 20
+        show screen Day
+        show screen Savings
+
+        "You received $20 from your salary. You received $%(total_tip)d in tips. You now have $%(balance)d in savings."
+
+        label one_all_three:
+            menu:
+                "Rent: -$10":
+                    $ balance -= 10
+                    $ rent_paid = 1
+                    jump one_no_rent
+                "Food: -$5":
+                    $ balance -= 5
+                    $ food_paid = 1
+                    jump one_no_food
+                "Electricity: -$5":
+                    $ balance -= 5
+                    $ electric_paid = 1
+                    jump one_no_electric
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_two
         
-        label parent:
+        label one_no_rent:
+            menu:
+                "Food: -$5":
+                    $ balance -= 5
+                    $ food_paid = 1
+                    jump one_no_rent_food
+                "Electricity: -$5":
+                    $ balance -= 5
+                    $ electric_paid = 1
+                    jump one_no_rent_electric
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_two
+
+        label one_no_food:
+            menu:
+                "Rent: -$10":
+                    $ balance -= 10
+                    $ rent_paid = 1
+                    jump one_no_rent_food
+                "Electricity: -$5":
+                    $ balance -= 5
+                    $ electric_paid = 1
+                    jump one_no_food_electric
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_two
+        
+        label one_no_electric:
+            menu:
+                "Rent: -$10":
+                    $ balance -= 10
+                    $ rent_paid = 1
+                    jump one_no_rent_electric
+                "Food: -$5":
+                    $ balance -= 5
+                    $ food_paid = 1
+                    jump one_no_food_electric
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_two
+        
+        label one_no_rent_food:
+            menu:
+                "Electricity: -$5":
+                    $ balance -= 5
+                    $ electric_paid = 1
+                    jump one_next_day
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_two
+    
+        label one_no_rent_electric:
+            menu:
+                "Food: -$5":
+                    $ balance -= 5
+                    $ food_paid = 1
+                    jump one_next_day
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_two
+
+        label one_no_food_electric:
+            menu:
+                "Rent: -$10":
+                    $ balance -= 10
+                    $ rent_paid = 1
+                    jump one_next_day
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_two
+        
+        label one_next_day:
+            menu:
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_two
+
+
+    label day_two:
+        hide screen Day
+        hide screen Savings
+
+        if (rent_paid == 0):
+            "You have received a warning from the apartment to pay rent."
+            $ rent_paid = -1
+        elif (rent_paid == -1):
+            "You have been evicted by the apartment for not paying rent."
+            return
+        else:
+            $ rent_paid = 0
+
+        if (food_paid == 0):
+            "You feel hungry from not eating last night."
+            $ food_paid = -1
+        elif (food_paid == -1):
+            "You have succumbed to your hunger."
+            return
+        else:
+            $ food_paid = 0
+
+        if (electric_paid == 0):
+            "You feel sick from a lack of heat last night."
+            $ electric_paid = -1
+        elif (electric_paid == -1):
+            "You have succumbed to sickness."
+            return
+        else:
+            $ electric_paid = 0
+
+        init:
+            image arbor_outside = "arbor.jpg"
+        define alex = Character("Alex", who_color="#c8ffc8")
+        define player = Character("Player", who_color="#3340fd")
+        
+        scene arbor_outside with fade:
+
+        "Day 2"
+
+        "You arrive at the campus coffee shop, the aroma of fresh coffee beans filling the air."
+        "Alex greets you when you get behind the counter."
+
+        alex "Hey again! Great job yesterday. How did you feel working your first day here?"
+
+        menu:
+            "It felt alright. Some of the customers were a bit rude.":
+                jump Alex_D2R1
+            "It was great! The customers here leave a lot of tips.":
+                jump Alex_D2R2
+
+        label Alex_D2R1:
+            alex "That's unfortunate to hear. I'm sure our future customers will be nicer. Make sure to watch what you say to some of these customers."
+            jump parent_one
+
+        label Alex_D2R2:
+            alex "Awesome! It seems like the customers enjoy talking with you. Stay on their good side and I'm sure they'll keep leaving tips."
+            jump parent_one
+        
+        label parent_one:
             define p = Character("Parent", who_color="#c8ffc8")
+
+            "As you stand behind the counter, the door chime rings, announcing the arrival of a new customer."
 
             label Parent_D1:
                 menu:
@@ -392,33 +600,653 @@ label start:
 
             label Parent_D1R21:
                 p "It's ok. Thanks for the coffee. It was nice to at least talk to someone, even though it seems you can be a little inconsiderate at times."
-                $ tip += 1
+                $ parent_rate += 1
                 jump Parent_D1R40
 
             label Parent_D1R41:
                 "The parent quickly pays and doesn't leave anything extra"
                 "She angrily takes the coffee from you and leaves the coffee shop in a hurry."
+                $ parent_rate -= 2
                 jump end_parent
 
             label Parent_D1R40:
                 "She takes the coffee from you and exits the coffee shop."
-                $ tip += 2
                 jump end_parent
             
             label Parent_D1R42:
                 "She takes the coffee from you while giving you a smile and leaves the coffee shop feeling a little better than before."
-                $ tip += 5
+                $ parent_rate += 2
                 jump end_parent
 
             label end_parent:
+                if (parent_rate > 0):
+                    $ tip = parent_rate * 5
                 if tip == 0: 
                     "It would have been nice if you received something extra"
                 else:
                     $ tip
                     "Nice! Looks like you got an extra $%(tip)d."
-                    $ balance += tip
-                    "You now have a balance of $%(balance)d" 
+                $ balance += tip
+                $ total_tip += tip
                 $ tip = 0
+
+            
+        jump love_one
+
+        label love_one:
+            define l = Character("Love Interest", who_color="#c8ffc8")
+
+            "As you stand behind the counter, the door chime rings, announcing the arrival of a new customer."
+
+            label Love_D1:
+                l "Can I get an iced vanilla latte?"
+                menu:
+                    "Sure, absolutely. One vanilla latte coming up.":
+                        jump Love_D1R4
+
+            label Love_D1R4:
+                l "Thanks a bunch!"
+                menu:
+                    "You're so beautiful, by the way.":
+                        jump Love_D1R7
+                    "I love your outfit, by the way.":
+                        jump Love_D1R8
+                    
+            label Love_D1R7:
+                l "Stop being creepy. I'm just going to take my drink and leave."
+                jump Love_D1R28
+            
+            label Love_D1R8:
+                l "Thank you! I thrifted it."
+                menu:
+                    "It looks great on you.":
+                        jump Love_D1R11
+                    "Would you like to go thrifting with me sometime? Maybe you can help me pick out some clothes as well.":
+                        jump Love_D1R12
+
+            label Love_D1R12:
+                l "I'd love that."
+                menu:
+                    "What's your number? I've written mine on your coffee cup.":
+                        jump Love_D1R17
+            
+            label Love_D1R17:
+                l "That's perfect! I'll text you. I'm free Friday."
+                jump Love_D1R29
+            
+            label Love_D1R11:
+                l "Uh, thanks."
+                menu:
+                    "So, uh, can I get your number?":
+                        jump Love_D1R15
+                    "So, how's your day been?":
+                        jump Love_D1R18
+
+            label Love_D1R18:
+                l "Uh, pretty good. Been studying a lot."
+                menu:
+                    "Ahaha, wanna study together sometime?":
+                        jump Love_D1R15
+                    "Sounds like you're pretty busy.":
+                        jump Love_D1R21
+            
+            label Love_D1R21:
+                l "Yeah, I am. Hence why I need the latte."
+                menu:
+                    "Here's your coffee. I gave you a double shot for the trouble.":
+                        jump Love_D1R24
+                    "Sounds like you also need my number.":
+                        jump Love_D1R15
+                
+            label Love_D1R24:
+                l "Thank you! You're too sweet."
+                menu:
+                    "I wrote my number on there, in case you'd ever want to hang out.":
+                        jump Love_D1R17
+                    "Yea thanks. I try to be.":
+                        jump Love_D1R27
+
+            label Love_D1R27:
+                l "Appreciate you ~ I'm sure Ill see you soon."
+                jump Love_D1R29
+
+            label Love_D1R15:
+                l "No. Just give me my coffee."
+                jump Love_D1R28
+
+            label Love_D1R28:
+                "She takes her drink from you and quickly exits the coffee shop."
+                jump love_end
+            
+            label Love_D1R29:
+                "She takes her drink from you and gives you a smile. You watch her leave the coffee shop."
+                $ love_rate += 1
+                jump love_end
+
+            label love_end:
+                if (love_rate> 0):
+                    $ tip = love_rate * 5
+                if tip == 0: 
+                    "It would have been nice if you received something extra"
+                else:
+                    $ tip
+                    "Nice! Looks like you got an extra $%(tip)d."
+                $ balance += tip
+                $ total_tip += tip
+                $ tip = 0
+
+    label night_two:
+        scene black
+
+        $ balance += 20
+        show screen Day
+        show screen Savings
+
+        "You received $20 from your salary. You received $%(total_tip)d in tips. You now have $%(balance)d in savings."
+        "Your apartment has increased the daily rent by $5."
+
+        label two_all_three:
+            menu:
+                "Rent: -$15":
+                    $ balance -= 15
+                    $ rent_paid = 1
+                    jump two_no_rent
+                "Food: -$5":
+                    $ balance -= 5
+                    $ food_paid = 1
+                    jump two_no_food
+                "Electricity: -$5":
+                    $ balance -= 5
+                    $ electric_paid = 1
+                    jump two_no_electric
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_three
+        
+        label two_no_rent:
+            menu:
+                "Food: -$5":
+                    $ balance -= 5
+                    $ food_paid = 1
+                    jump two_no_rent_food
+                "Electricity: -$5":
+                    $ balance -= 5
+                    $ electric_paid = 1
+                    jump two_no_rent_electric
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_three
+
+        label two_no_food:
+            menu:
+                "Rent: -$15":
+                    $ balance -= 15
+                    $ rent_paid = 1
+                    jump two_no_rent_food
+                "Electricity: -$5":
+                    $ balance -= 5
+                    $ electric_paid = 1
+                    jump two_no_food_electric
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_three
+        
+        label two_no_electric:
+            menu:
+                "Rent: -$15":
+                    $ balance -= 15
+                    $ rent_paid = 1
+                    jump two_no_rent_electric
+                "Food: -$5":
+                    $ balance -= 5
+                    $ food_paid = 1
+                    jump two_no_food_electric
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_three
+        
+        label two_no_rent_food:
+            menu:
+                "Electricity: -$5":
+                    $ balance -= 5
+                    $ electric_paid = 1
+                    jump two_next_day
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_three
+    
+        label two_no_rent_electric:
+            menu:
+                "Food: -$5":
+                    $ balance -= 5
+                    $ food_paid = 1
+                    jump two_next_day
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_three
+
+        label two_no_food_electric:
+            menu:
+                "Rent: -$15":
+                    $ balance -= 15
+                    $ rent_paid = 1
+                    jump two_next_day
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_three
+        
+        label two_next_day:
+            menu:
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_three
+
+    label day_three:
+        hide screen Day
+        hide screen Savings
+
+        if (rent_paid == 0):
+            "You have received a warning from the apartment to pay rent."
+            $ rent_paid = -1
+        elif (rent_paid == -1):
+            "You have been evicted by the apartment for not paying rent."
+            return
+        else:
+            $ rent_paid = 0
+
+        if (food_paid == 0):
+            "You feel hungry from not eating last night."
+            $ food_paid = -1
+        elif (food_paid == -1):
+            "You have succumbed to your hunger."
+            return
+        else:
+            $ food_paid = 0
+
+        if (electric_paid == 0):
+            "You feel sick from a lack of heat last night."
+            $ electric_paid = -1
+        elif (electric_paid == -1):
+            "You have succumbed to sickness."
+            return
+        else:
+            $ electric_paid = 0
+
+        init:
+            image arbor_outside = "arbor.jpg"
+        define alex = Character("Alex", who_color="#c8ffc8")
+        define player = Character("Player", who_color="#3340fd")
+        
+        scene arbor_outside with fade:
+
+        "Day 3"
+
+        "You take your position behind the counter and wait for the day's customers."
+
+        "As you stand behind the counter, the door chime rings, announcing the arrival of a new customer."
+
+        jump nerd_one
+
+        label nerd_one:
+            define n = Character("Nerd", who_color="#c8ffc8")
+
+            label Nerd_D1:
+                n "Um, I'll have a venti caramel frappe with whipped cream and a splash of chai."
+                menu:
+                    "Certainly. Coming right up.":
+                        jump Nerd_D1R4
+            
+            label Nerd_D1R4:
+                n "Sounds good, but can you make it quickly. I haven't slept at all because I've been studying for an exam. It is in 10 minutes."
+                menu:
+                    "Oh sounds stressful. I'll see what I can do.":
+                        jump athlete_one
+                    "Ok I'll keep that in mind.":
+                        jump athlete_one
+
+        label athlete_one:
+            define a = Character("Athlete", who_color="#c8ffc8")
+
+            label Athlete_D1:
+                a "I'll have a black coffee, extra shot of expresso. But I need it now, I have a game today and I'm going to miss the bus."
+                menu:
+                    "Hey, I'm sorry but you will have to wait until after I complete another order.":
+                        jump Athlete_D1R5
+                    "Oh hey, aren't you the star player on our soccer team. Yeah dude, I can prioritize making yours. Just don't tell that nerd over there.":
+                        jump Athlete_D1R4
+
+            label Athlete_D1R4:
+                a "Thanks, bro. I appreciate you. Our win today is going to be because of you."
+                menu:
+                    "Here is your coffee.":
+                        jump Athlete_D1R29
+            
+            label Athlete_D1R5:
+                a "Look, I need it now. I can't miss the bus. This is the final game of the season."
+                menu:
+                    "We can't rush your order. I'm sorry.":
+                        jump Athlete_D1R7
+                    "I guess I can bump your order up. Just don't tell that nerd waiting behind you.":
+                        jump Athlete_D1R10
+            
+            label Athlete_D1R7:
+                a "Then the whole school is going to hate you and know you were the dumb barista that made us lose the final game of the season."
+                menu:
+                    "Hey, look. Maybe I can make an exception for you. That nerd behind you ordered a fancy drink that will take a while so I'll make your order first real quick.":
+                        jump Athlete_D1R10
+                    "I don't care who you are or what the school will think. You have to wait in line like everyone else.":
+                        jump Athlete_D1R23
+            
+            label Athlete_D1R10:
+                a "Yeah, I'm sure they have nowhere to be. Thanks."
+                menu:
+                    "Actually I've changed my mind. I can't do that to one of our customers.":
+                        jump Athlete_D1R13
+                    "True that. They're probably on their way to the library or something. Can't be as important as the final soccer game of the season.":
+                        jump Athlete_D1R30
+
+            label Athlete_D1R30:
+                a "Yeah, my priorities are the most important obviously."
+                menu:
+                    "Here is your coffee.":
+                        jump Athlete_D1R29
+
+            label Athlete_D1R29:
+                a "Pleasure doing business with you. And thanks for putting my order in front of that other customer's. Sports are more important than school anyways."
+                $ athlete_rate += 2
+                jump Athlete_not_nerd
+
+            label Athlete_D1R23:
+                a "Shut up. I'm just going to leave. I don't have time for this."
+                menu:
+                    "That's great. You won't be late to your game anymore.":
+                        jump Athlete_D1R26
+                    "Wait no I'm sorry. I'll make your drink first. Just don't leave.":
+                        jump Athlete_D1R27
+
+            label Athlete_D1R27:
+                a "Whatever, dude. At least now the whole school won't hate you."
+                jump Athlete_not_nerd
+            
+            label Athlete_D1R13:
+                a "You serious? I'm going to miss my bus at this rate."
+                menu:
+                    "I'm just messing with you. Here is your coffee.":
+                        jump Athlete_D1R16
+                    "That's not my problem. You have to wait like everybody else.":
+                        jump Athlete_D1R23
+            
+            label Athlete_D1R16:
+                a "Thanks a bunch man. You saved my day."
+                $ athlete_rate += 1
+                jump Athlete_not_nerd
+            
+            label Athlete_D1R26:
+                a "Whatever. You've just lost a customer. If we lose this game, the whole school will know its on you."
+                $ athlete_rate -= 2
+                jump nerd_grateful
+
+        label nerd_grateful:
+            "The nerd walks back up to the counter after the athlete leaves."
+            n "Hey thanks for choosing not to make that athlete's order before mine. I really appreciate it."
+            menu:
+                "Of course. Good luck on your exam today. Do you mind me asking what the subject is?":
+                    jump Nerd_D1R12
+                "I didn't do it for you specifically. I just don't like his attitude.":
+                    jump Nerd_D1R30
+
+            label Nerd_D1R12:
+                n "It's for an this coding project class I'm taking. I love coding so I'm pretty excited for the exam. I won't bore you with the details."
+                menu:
+                    "I totally understand. Here is your coffee.":
+                        jump Nerd_D1R14
+
+            label Nerd_D1R14:
+                n "Thank you! Thanks again for making my drink first."
+                "He takes his drink from you and leaves hurriedly in the direction of the lecture hall."
+                $ nerd_rate += 2
+                jump nerd_end
+
+            label Nerd_D1R30:
+                n "Oh ok. Thanks anyways I guess."
+                "He hesitantly takes his drink from you and leaves the coffee shop."
+                $ nerd_rate += 1
+                jump nerd_end
+            
+        label Athlete_not_nerd:
+            "You feel happy helping that athlete win his game."
+            "You check if he left behind anything."
+            if (athlete_rate > 0):
+                $ tip = athlete_rate * 5
+            if tip == 0: 
+                "He left no tip behind. I guess he was too rushed to give me a tip."
+            else:
+                $ tip
+                "Nice! Looks like he left behind an extra $%(tip)d."
+            $ balance += tip
+            $ total_tip += tip
+            $ tip = 0
+
+            "The nerd walks back up to the counter after the athlete leaves."
+
+            n "Did you just make his order before mine. I have to go take an exam in a few minutes!"
+            menu:
+                "Yea sorry about that his bus was about to leave. I'll be able to make your drink in time still.":
+                    jump Nerd_D1R18
+                "The athlete's game was way more important than your exam. It's the final game of the season and they're representing our school.":
+                    jump Nerd_D1R19
+            
+            label Nerd_D1R18:
+                n "Oh ok I guess I understand. Hopefully I'll still be able to make it to my exam and perform well."
+                menu:
+                    "Good luck on your exam. Here is your drink.":
+                        jump Nerd_D1R21
+                    "School isn't that important anyways. Stop taking everything so seriously. Here's your drink.":
+                        jump Nerd_D1R22
+
+            label Nerd_D1R19:
+                n "My exam is also important! It's my last chance to guarantee I get a good grade in the class. At this rate, I might be late and get a bad grade."
+                menu:
+                    "Sorry about that. I hope you still do well on your exam. Here is your drink.":
+                        jump Nerd_D1R21
+                    "School isn't that important anyways. Stop taking everything so seriously. Here is your drink":
+                        jump Nerd_D1R22
+
+            label Nerd_D1R21:
+                n "Thanks I guess."
+                "He takes his drink from you, giving you a disgruntled look and leaving quickly to his lecture hall."
+                jump nerd_end
+            
+            label Nerd_D1R22:
+                n "How can you say that! How we do in school will determine how we do for the rest of our lives."
+                "He angrily takes the drink from your hands and storms out of the coffee shop towards his lecture hall."
+                $ nerd_rate -= 2
+                jump nerd_end
+
+
+            jump night_three
+
+        label nerd_end:
+            "You check if he left behind any tip."
+            if (nerd_rate > 0):
+                $ tip = nerd_rate * 5
+            if tip == 0: 
+                "He left no tip on the counter. Seems like he's too busy thinking about his exam."
+            else:
+                $ tip
+                "Nice! Looks like he left behind an extra $%(tip)d."
+            $ balance += tip
+            $ total_tip += tip
+            $ tip = 0
+            
+            jump night_three
+
+    label night_three:
+        scene black
+
+        $ balance += 20
+        show screen Day
+        show screen Savings
+
+        "You received $20 from your salary. You received $%(total_tip)d in tips. You now have $%(balance)d in savings."
+        "The cost of living in Santa Barbara has gone up."
+
+        label three_all_three:
+            menu:
+                "Rent: -$15":
+                    $ balance -= 15
+                    $ rent_paid = 1
+                    jump three_no_rent
+                "Food: -$10":
+                    $ balance -= 10
+                    $ food_paid = 1
+                    jump three_no_food
+                "Electricity: -$5":
+                    $ balance -= 5
+                    $ electric_paid = 1
+                    jump three_no_electric
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_four
+        
+        label three_no_rent:
+            menu:
+                "Food: -$10":
+                    $ balance -= 10
+                    $ food_paid = 1
+                    jump three_no_rent_food
+                "Electricity: -$5":
+                    $ balance -= 5
+                    $ electric_paid = 1
+                    jump three_no_rent_electric
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_four
+
+        label three_no_food:
+            menu:
+                "Rent: -$15":
+                    $ balance -= 15
+                    $ rent_paid = 1
+                    jump three_no_rent_food
+                "Electricity: -$5":
+                    $ balance -= 5
+                    $ electric_paid = 1
+                    jump three_no_food_electric
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_four
+        
+        label three_no_electric:
+            menu:
+                "Rent: -$15":
+                    $ balance -= 15
+                    $ rent_paid = 1
+                    jump three_no_rent_electric
+                "Food: -$10":
+                    $ balance -= 10
+                    $ food_paid = 1
+                    jump three_no_food_electric
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_four
+        
+        label three_no_rent_food:
+            menu:
+                "Electricity: -$5":
+                    $ balance -= 5
+                    $ electric_paid = 1
+                    jump three_next_day
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_four
+    
+        label three_no_rent_electric:
+            menu:
+                "Food: -$10":
+                    $ balance -= 10
+                    $ food_paid = 1
+                    jump three_next_day
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_four
+
+        label three_no_food_electric:
+            menu:
+                "Rent: -$15":
+                    $ balance -= 15
+                    $ rent_paid = 1
+                    jump three_next_day
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_four
+        
+        label three_next_day:
+            menu:
+                "Next Day":
+                    $ total_tip = 0
+                    $ day += 1
+                    jump day_four
+        
+    label day_four:
+        hide screen Day
+        hide screen Savings
+
+        init:
+            image arbor_outside = "arbor.jpg"
+        define alex = Character("Alex", who_color="#c8ffc8")
+        define player = Character("Player", who_color="#3340fd")
+        
+        scene arbor_outside with fade:
+
+        if (rent_paid == 0):
+            "You have been evicted by the apartment for not paying rent."
+            return
+        elif (rent_paid == -1):
+            "You have been evicted by the apartment for not paying rent."
+            return
+        else:
+            $ rent_paid = 0
+
+        if (food_paid == 0):
+            "You have succumbed to your hunger."
+            return
+        elif (food_paid == -1):
+            "You have succumbed to your hunger."
+            return
+        else:
+            $ food_paid = 0
+
+        if (electric_paid == 0):
+            "You have succumbed to sickness because of a lack of heat last night."
+            return
+        elif (electric_paid == -1):
+            "You have succumbed to sickness because of a lack of heat last night."
+            return
+        else:
+            $ electric_paid = 0
+
+        "Congratulations! You have successfully navigated through the game."
+
+            
+
+            
+
 
     return
 
